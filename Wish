@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Eid Mubarak</title>
+  <style>
+    body {
+      background: url('https://drive.google.com/file/d/1fgkrj14jmcfXnIWAZm-MqtEps96JFsQp/view') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      color: rgb(122, 4, 69);
+      text-align: center;
+      padding-top: 100px;
+    }
+    .box {
+      background-color: rgba(8, 74, 197, 0.6);
+      padding: 30px;
+      border-radius: 15px;
+      display: inline-block;
+    }
+    input {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      width: 200px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: gold;
+      color: black;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .wish {
+      margin-top: 30px;
+      font-size: 24px;
+      line-height: 1.6;
+    }
+    #shareBtn {
+      margin-top: 20px;
+      background: #25D366;
+      color: rgb(61, 6, 6);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box" id="formBox">
+    <h2>Enter Your Name</h2>
+    <input type="text" id="userName" placeholder="Your Name">
+    <br>
+    <button onclick="showWish()">Wish Eid Mubarak</button>
+  </div>
+
+  <div class="wish" id="wishMessage" style="display: none;"></div>
+  <button id="shareBtn" style="display:none;" onclick="shareWhatsApp()">📤 Share on WhatsApp</button>
+
+  <!-- Eid Background Music -->
+  <audio id="eidMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+  <script>
+    function showWish() {
+      var name = document.getElementById("userName").value.trim();
+      if (name === "") {
+        alert("Please enter your name!");
+        return;
+      }
+
+      document.getElementById("formBox").style.display = "none";
+      document.getElementById("wishMessage").style.display = "block";
+      document.getElementById("shareBtn").style.display = "inline-block";
+
+      document.getElementById("wishMessage").innerHTML = `
+        🌙✨ <strong>Eid Mubarak, ${name}!</strong> ✨🌙<br><br>
+        May Allah bless you with endless joy, peace, and prosperity.<br>
+        Aapki zindagi har din Eid jaisi ho, duaon ke saath! 💖
+      `;
+
+      // Start music
+      document.getElementById("eidMusic").play();
+    }
+
+    function shareWhatsApp() {
+      var name = document.getElementById("userName").value.trim();
+      var msg = `🌙 Eid Mubarak, ${name}! May your life be filled with peace, love and joy. ❤️`;
+      var url = "https://wa.me/?text=" + encodeURIComponent(msg);
+      window.open(url, "_blank");
+    }
+  </script>
+
+</body>
+</html>
