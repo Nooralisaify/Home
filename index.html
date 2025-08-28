@@ -1,16 +1,70 @@
-<html>
-<head><title>My New Website</title>
-<link rel="stylesheet" type="text/css" href="PJ_01.css"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSV Search</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 30px; }
+    input, button { padding: 8px; margin: 5px; font-size: 14px; }
+    table { margin: 20px auto; border-collapse: collapse; width: 50%; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+    th { background: #eee; }
+  </style>
 </head>
 <body>
-<h1><B>CROWN  MEDICAL CENTRE</B></h1>
-<BR><BR> 
-<P>Mohammad Badrul Hoda.<br>
-Crown Medical Centre<br>
-New Purulia Road, Mango, Near Jungle Park <br>
-Jamshedpur, Jharkhand<br>
-Contact No -  +91 9472821499<br>
+  <h2>Candidate Search</h2>
+  <label>Enter ID: </label>
+  <input type="text" id="idInput" placeholder="Enter ID">
+  <label>Enter DOB: </label>
+  <input type="date" id="dobInput">
+  <button onclick="searchCandidate()">Search</button>
 
-</P>
+  <div id="result"></div>
+
+  <script>
+    let csvData = [];
+
+    // Load CSV file
+    async function loadCSV() {
+      let response = await fetch("Data.csv?nocache=" + new Date().getTime());
+      let text = await response.text();
+
+      let rows = text.trim().split("\n").map(r => r.split(","));
+      let headers = rows.shift(); // First row headers
+      csvData = rows.map(r => {
+        let obj = {};
+        headers.forEach((h, i) => obj[h.trim()] = r[i].trim());
+        return obj;
+      });
+    }
+
+    // Search Function
+    function searchCandidate() {
+      let id = document.getElementById("idInput").value.trim();
+      let dob = document.getElementById("dobInput").value.trim();
+      let resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "";
+
+      let found = csvData.find(row => row.ID === id && row.DOB === dob);
+
+      if (found) {
+        let table = `<table>
+                      <tr><th>ID</th><th>NAME</th><th>DOB</th><th>STATUS</th></tr>
+                      <tr>
+                        <td>${found.ID}</td>
+                        <td>${found.NAME}</td>
+                        <td>${found.DOB}</td>
+                        <td>${found.STATUS}</td>
+                      </tr>
+                    </table>`;
+        resultDiv.innerHTML = table;
+      } else {
+        resultDiv.innerHTML = "<p style='color:red'>No record found!</p>";
+      }
+    }
+
+    // Load CSV initially
+    loadCSV();
+  </script>
 </body>
 </html>
